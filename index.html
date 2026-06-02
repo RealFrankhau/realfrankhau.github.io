@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frank HAU | Personal Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <section class="hero-section">
+        <!-- Top Responsive Header Bar -->
+        <header>
+            <a href="#" class="logo">frankhau</a>
+            
+            <!-- Hamburger Menu Button Visible only on Mobile/Tablet UI -->
+            <button class="menu-toggle" aria-label="Toggle navigation menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <!-- Adaptive Navigation Container -->
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Portfolio</a></li>
+                    <li><a href="#">Resume</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Dynamic Grid Container -->
+        <div class="container">
+            <div class="content-left">
+                <p class="subtitle">Welcome to My Space</p>
+                <h1>I Am <span>Frank Hau</span></h1>
+                <p class="description">
+                    Welcome! I am Frank HAU, an explorer at heart who translates global perspectives into impactful solutions. My dedication to growth is reflected in my diverse pursuits—from long-distance running and diving to language acquisition and music. I channel this energetic, continuous-learning mindset into every professional project.
+                </p>
+                <div class="btn-group">
+                    <a href="index_chi.html" class="btn btn-secondary">中文</a>
+                    <a href="#" class="btn btn-primary">About ME</a>
+                </div>
+            </div>
+
+            <!-- Profile Space (Adapts scale and shifts order context-sensitively across screens) -->
+            <div class="content-right">
+                <!-- Drop a transparent PNG photo here if you want to display an image (like the woman in templete.webp) -->
+                <!-- <img src="your-transparent-profile.png" alt="Frank Hau" style="max-width: 90%; height: auto;"> -->
+            </div>
+        </div>
+    </section>
+
+    <!-- UI Script Handles Responsive Menu Interaction -->
+    <script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navMenu = document.querySelector('nav');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Auto-closes mobile tray instantly upon active link interaction
+        document.querySelectorAll('nav ul li a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
