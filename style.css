@@ -47,15 +47,28 @@ header {
 }
 
 .logo {
-    font-size: 28px;
-    font-weight: 800;
-    letter-spacing: 1px;
-    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
     text-decoration: none;
 }
 
+.logo img {
+    max-height: 50px;
+    width: auto;
+    display: block;
+}
+
+.logo-text {
+    margin-left: 12px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 1px;
+    text-transform: lowercase;
+}
+
 .logo span {
-    color: #00f2fe; /* Vibrant cyan accent color */
+    color: #ffffff; /* Vibrant cyan accent color */
 }
 
 /* Desktop Navigation Links */
@@ -146,8 +159,10 @@ nav ul li a:hover, nav ul li a.active {
 
 /* clamp() auto-calculates font-size relative to screen widths dynamically */
 h1 {
+    font-family: 'Segoe UI', Tahoma, Geneva, sans-serif;
     font-size: clamp(34px, 5vw, 64px);
     font-weight: 700;
+    font-style: italic;
     line-height: 1.2;
     margin-bottom: 25px;
     letter-spacing: -0.5px;
@@ -159,19 +174,22 @@ h1 span {
 }
 
 .description {
+    font-family: 'courier new', monospace;
     font-size: clamp(15px, 1.8vw, 17px);
-    line-height: 1.7;
+    line-height: 1.45;
     color: rgba(255, 255, 255, 0.8);
-    margin-bottom: 40px;
+    margin-top: 8px;
+    margin-bottom: 18px;
     text-align: justify;
 }
 
 /* CTA Interactive Buttons */
 .btn-group {
     display: flex;
-    gap: 20px;
+    gap: 28px;
     flex-wrap: wrap;
     justify-content: flex-start;
+    margin-top: 30px;
 }
 
 .btn {
