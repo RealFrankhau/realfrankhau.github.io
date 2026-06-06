@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="香港吉他網 - 專業吉他學習平台，提供和弦篇、技巧篇、和弦表、和弦解說等完整教學資源">
+    <meta name="keywords" content="吉他, 和弦, 技巧, 學習, 香港">
+        <link rel="icon" href="..\landing page\website_logo_transparent.png" type="image/x-icon">
+    <title>結他神棍之家</title>
+    <link href="https://font.emtech.cc/css/GlowSansSCCom/" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-container">
+                <a href="../index.html" class="logo">
+                    <img src="../website_logo_transparent.png" alt="frankhau logo" class="logo-image">
+                    <span>frankhau</span>
+                </a>                
+                <!-- Hamburger Menu Button -->
+                <button class="menu-toggle" aria-label="Toggle navigation menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">主頁</a></li>
+                        <li><a href="../guitar/index.html">和弦篇</a></li>
+                        <li><a href="../guitarlesson/index.html">技巧篇</a></li>
+                        <li><a href="../chordiagram/index.html">和弦表</a></li>
+                        <li><a href="../chordlesson/index.html">和弦解說</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <div class="video-container">
+            <video autoplay loop muted>
+                <source src="flashlogo.mp4" type="video/mp4">
+                您的瀏覽器不支援 video 標籤。
+            </video>
+        </div>
+
+        <div class="logo-section">
+            <div class="logo-row">
+                <img src="../website_logo_transparent.png" alt="frankhau logo">
+                <div class="text">© 2026 Website from frankhau</div>
+                            </div>
+            <div class="logo-row">
+                <div class="text">Since 1998</div>
+                            </div>
+        </div>
+    </div>
+
+    <script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navMenu = document.querySelector('nav');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Auto-closes mobile tray instantly upon active link interaction
+        document.querySelectorAll('nav ul li a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
