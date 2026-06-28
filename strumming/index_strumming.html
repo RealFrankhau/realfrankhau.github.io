@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>技巧篇 - 結他的撥奏方法</title>
+  <style>
+    :root {
+      --bg: #f4efe6;
+      --surface: #ffffff;
+      --text: #222;
+      --muted: #5f5f5f;
+      --accent: #1a5f9f;
+      --border: rgba(34,34,34,0.08);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; background: var(--bg); color: var(--text); }
+    body::before { content: ""; position: fixed; inset: 0; pointer-events: none; background: radial-gradient(circle at top right, rgba(26,95,159,.14), transparent 22%); }
+    .page { position: relative; z-index: 1; }
+    .hero { background: linear-gradient(180deg, #1b4d81 0%, #256ba0 100%); color: #fff; padding: 44px 22px 34px; text-align: center; }
+    .hero h1 { margin: 0; font-size: clamp(2rem, 4vw, 3.2rem); letter-spacing: .04em; }
+    .hero p { margin: 18px auto 0; max-width: 780px; line-height: 1.75; color: rgba(255,255,255,.9); font-size: 1rem; }
+    .hero .badge { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; padding: 10px 16px; border-radius: 999px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.18); font-size: .95rem; }
+    .main { max-width: 1150px; margin: 0 auto; padding: 30px 20px 48px; }
+    .section { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 26px 28px; margin-bottom: 24px; box-shadow: 0 14px 30px rgba(28,40,68,.05); }
+    .section h2 { margin-top: 0; font-size: 1.8rem; }
+    .section p, .section li { color: var(--muted); line-height: 1.8; }
+    .section ul { padding-left: 1.25rem; margin: 0; }
+    .grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); margin-top: 18px; }
+    .card { border-radius: 20px; overflow: hidden; background: #fff; border: 1px solid var(--border); box-shadow: 0 14px 28px rgba(28,40,68,.05); }
+    .card img { width: 100%; display: block; object-fit: cover; }
+    .card-body { padding: 16px 16px 20px; }
+    .chord-line { display: flex; justify-content: center; align-items: center; gap: 12px; flex-wrap: wrap; margin: 18px 0; }
+    .chord-arrow { display: inline-flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--text); min-width: 24px; }
+    .card-body h3 { margin: 0 0 10px; font-size: 1.1rem; }
+    .card-body p { margin: 0; color: var(--muted); }
+    .table-list { width: 100%; border-collapse: collapse; margin-top: 16px; }
+    .table-list td { padding: 10px 8px; vertical-align: middle; }
+    .table-list img { width: 100%; max-width: 140px; border-radius: 14px; display: block; }
+    .table-list a { color: var(--accent); text-decoration: none; font-weight: 700; }
+    .nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 28px auto 0; max-width: 940px; }
+    .nav a { display: inline-flex; padding: 12px 18px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2); border-radius: 999px; color: #fff; text-decoration: none; font-weight: 600; transition: transform .2s, background .2s; }
+    .nav a:hover { transform: translateY(-1px); background: rgba(255,255,255,.2); }    
+    .play-midi { cursor: pointer; display: block; border-radius: 14px; transition: transform .2s, box-shadow .2s; width: auto; max-width: none; }
+    .play-midi:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(26,95,159,.18); }
+    .midi-caption { margin-top: 8px; color: var(--accent); font-weight: 700; font-size: 0.95rem; text-align: center; }
+    .midi-player-status { margin-top: 14px; color: var(--muted); font-size: 0.95rem; }
+    .audio-player { display: none; }
+    .midi-grid { display: grid; grid-template-columns: repeat(3, minmax(550px, 1fr)); gap: 18px; margin-top: 18px; }
+    .midi-grid2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 18px; }
+    .section p a { color: inherit; text-decoration: none; }
+    .section p a:hover { text-decoration: underline; }
+    .midi-card { background: #ffffff; border: 1px solid rgba(34,34,34,.08); border-radius: 20px; box-shadow: 0 14px 28px rgba(28,40,68,.05); overflow: hidden; display: flex; flex-direction: column; }
+    .midi-card2 { background: #ffffff; border: 1px solid rgba(34,34,34,.08); border-radius: 20px; box-shadow: 0 14px 28px rgba(28,40,68,.05); overflow: hidden; display: flex; flex-direction: column; }
+    .midi-card--new-row { grid-column-start: 1; }
+    .midi-card__header { padding: 14px 16px 10px; font-size: 1rem; font-weight: 700; color: var(--accent); }
+    @media (max-width: 980px) {
+      .midi-grid { grid-template-columns: repeat(2, minmax(220px, 1fr)); }
+    }
+    @media (max-width: 640px) {
+      .midi-grid { grid-template-columns: 1fr; }
+    }
+    .midi-card__media { padding: 0 16px 16px; background: #f9f9f9; display: flex; justify-content: center; }
+    .midi-card__media2 { padding: 0 12px 16px; background: #f9f9f9; display: flex; justify-content: left; }
+    .midi-card__media img { width: 100%; height: auto; border-radius: 14px; }
+    .midi-card__caption { padding: 0 16px 16px; text-align: center; color: var(--accent); font-weight: 700; font-size: 0.95rem; }
+    .midi-card__caption2 { padding: 0 16px 16px; text-align: left; color: var(--accent); font-weight: 700; font-size: 0.95rem; }
+    .symbol-table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+    .symbol-table td { padding: 10px 8px; vertical-align: middle; }
+    .symbol-table .symbol-icon { width: 5%; text-align: center; }
+    .symbol-table .symbol-icon img { width: auto; height: 35px; max-width: none; }
+    .symbol-table .symbol-icon2 img { width: auto; height: 80px; max-width: none; }
+    .symbol-table .symbol-text { width: 95%; color: var(--muted); font-size: 1rem; line-height: 1.8; font-family: inherit; }
+    .symbol-title { text-align: center; margin: 0 0 12px; font-size: 1.5rem; color: #008000; font-family: inherit; }
+    .symbol-text span { font-family: inherit; }
+    .note { margin-top: 18px; padding: 16px 18px; background: #eef5fb; border-left: 4px solid #1a5f9f; border-radius: 14px; color: #1f496f; }
+    footer { text-align: center; padding: 22px 16px 28px; color: var(--muted); font-size: .95rem; }
+    
+    @media (max-width: 720px) { .hero { padding: 34px 16px 28px; } }
+  
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <h1>技巧篇 - 結他的撥奏方法</h1>
+      <p>將常用的撥奏方法、撥奏符號和 MP3 範例放在一起，方便練習與快速瀏覽。</p>
+      <nav class="nav">
+        <a href="../index_new.html">結他神棍之家《技巧篇》</a>
+        <a href="./../../guitarmain/index.html">結他神棍之家</a>
+      </nav>
+    </header>
+    <main class="main">
+      <section class="section">
+        <h2>結他撥奏</h2>
+	<p>結他撥奏俗稱『掃結他』。</p>
+        <p>結他撥奏『掃結他』一方面可以用手，另一方面也可以用匹克『Pick』來進行的。</p>
+	<p>其實掃結他的方法可以說是千變萬化，但其中也可以歸納出一些簡單的形式。所以我想借用這個網頁來介紹一些結他的撥奏方法，讓一些初學結他的人對撥奏結他『掃結他』有較深的認識</p>
+	<p>當然 Practice make perfect『多練習能使技巧進步』啦！</p>
+	<p>首先，我在此特別鳴謝<a href="http://www.scenicnewengland.net/guitar/acoustic/">史密夫先生</a>能提供一些練習檔案，好讓我能完成這個網頁。
+
+
+        <p>以下的各個例子都是以 <strong>G → C → D → G</strong> 和弦來作進行。而大家更可以隨著附上的 MP3 檔案來跟著學習。</p>
+        <div class="chord-line">
+          <img src="../strumming/g.gif" alt="G Chord" width="131" height="209">
+          <span class="chord-arrow">→</span>
+          <img src="../strumming/c.gif" alt="C Chord" width="130" height="210">
+          <span class="chord-arrow">→</span>
+          <img src="../strumming/d.gif" alt="D Chord" width="130" height="210">
+          <span class="chord-arrow">→</span>
+          <img src="../strumming/g.gif" alt="G Chord" width="131" height="209">
+        </div>
+     </section>
+
+<section class="section">
+        <h2 class="symbol-title">Pick 匹克</h2>
+        <p>Pick 大致上可以分成兩類：</p>
+        <table class="symbol-table">
+          <tr>
+            <td class="symbol-icon2"><img src="pick1.gif" alt="pick"></td>
+            <td class="symbol-text"><span>〈一〉是一般普通的Pick。</span></td>
+          </tr>
+          <tr>
+            <td class="symbol-icon2"><img src="thumbpick.gif" alt="thumbpick"></td>
+            <td class="symbol-text"><span>〈二〉是姆指Pick﹝俗稱指套﹞</span></td>
+          </tr>
+        </table>
+	<div class="midi-grid2">
+          <article class="midi-card2">
+            <div class="midi-card__header">Pick 也可以依其厚薄程度而分成三大類：</div>
+            <div class="midi-card__caption2">〈一〉Thin﹝一般是 0.46~0.58mm﹞</div>
+            <div class="midi-card__caption2">〈二〉Medium﹝一般是 0.58~0.72mm﹞</div>
+            <div class="midi-card__caption2">〈三〉Heavy﹝一般是 0.72~1.2mm﹞</div>
+          </article>
+          <article class="midi-card2">
+            <div class="midi-card__header">Pick 匹克的厚薄</div>
+            <div class="midi-card__caption2">厚度較薄的匹克，可彈出較清脆的聲音，多數適用於民謠結他掃和弦時使用。另一方面，厚度較厚的匹克，彈出來的音色比較紮實，多數是用於民謠結他或電結他奏獨奏﹝Solo﹞時使用的。</div>
+          </article>
+        </div>
+      </section>
+
+
+
+
+      <section class="section">
+        <h2 class="symbol-title">基本撥奏練習</h2>
+        <p>以下各個符號均為常見的節奏與撥奏記號，請參考下表練習。</p>
+        <table class="symbol-table">
+          <tr>
+            <td class="symbol-icon"><img src="downstroke.gif" alt="向下撥奏"></td>
+            <td class="symbol-text"><span>向上撥奏『向上掃』，即用手指或匹克由第一弦撥至第六弦。</span></td>
+          </tr>
+          <tr>
+            <td class="symbol-icon"><img src="upstroke.gif" alt="向上撥奏"></td>
+            <td class="symbol-text"><span>向下撥奏『向下掃』，即用手指或匹克由第六弦撥至第一弦。</span></td>
+          </tr>
+        </table>
+	<p>這個練習是訓練向上及向下撥奏的技巧。</p>
+	<div class="midi-grid">
+          <article class="midi-card">
+            <div class="midi-card__header">基本練習</div>
+            <div class="midi-card__media"><img class="play-midi" src="strum.gif" alt="基本練習" WIDTH="516" HEIGHT="50" data-midi="strum.mp3"></div>
+            <div class="midi-card__media2"><img class="play-midi" src="struma.gif" alt="基本練習" WIDTH="494" HEIGHT="34" data-midi="strum.mp3"></div>
+
+            <div class="midi-card__caption">基本練習</div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>撥奏練習</h2>
+        <p>下列為撥奏練習，請按圖播放對應 MP3 範例。</p>
+        <div class="midi-grid">
+          <article class="midi-card">
+            <div class="midi-card__header">撥奏練習一</div>
+            <div class="midi-card__media"><img class="play-midi" src="strum_1.gif" alt="撥奏練習一" WIDTH="515" HEIGHT="49" data-midi="strum_1.mp3"></div>
+            <div class="midi-card__media2"><img class="play-midi" src="strum_1a.gif" alt="撥奏練習一" WIDTH="494" HEIGHT="34" data-midi="strum_1.mp3"></div>
+            <div class="midi-card__caption">撥奏練習一</div>
+          </article>
+          <article class="midi-card midi-card--new-row">
+            <div class="midi-card__header">撥奏練習二</div>
+            <div class="midi-card__media"><img class="play-midi" src="strum_2.gif" alt="撥奏練習二" WIDTH="516" HEIGHT="50" data-midi="strum_2.mp3"></div>
+            <div class="midi-card__media2"><img class="play-midi" src="strum_2a.gif" alt="撥奏練習二" WIDTH="494" HEIGHT="34" data-midi="strum_2.mp3"></div>
+            <div class="midi-card__caption">撥奏練習二</div>
+          </article>
+          <article class="midi-card midi-card--new-row">
+            <div class="midi-card__header">撥奏練習三</div>
+            <div class="midi-card__media"><img class="play-midi" src="strum_3.gif" alt="撥奏練習三" WIDTH="516" HEIGHT="50" data-midi="strum_3.mp3"></div>
+            <div class="midi-card__media2"><img class="play-midi" src="strum_3a.gif" alt="撥奏練習三" WIDTH="494" HEIGHT="34" data-midi="strum_3.mp3"></div>
+            <div class="midi-card__caption">撥奏練習三</div>
+          </article>
+          <article class="midi-card midi-card--new-row">
+            <div class="midi-card__header">撥奏練習四</div>
+            <div class="midi-card__media"><img class="play-midi" src="strum_4.gif" alt="撥奏練習四" WIDTH="516" HEIGHT="50" data-midi="strum_4.mp3"></div>
+            <div class="midi-card__media2"><img class="play-midi" src="strum_4a.gif" alt="撥奏練習四" WIDTH="494" HEIGHT="34" data-midi="strum_4.mp3"></div>
+            <div class="midi-card__caption">撥奏練習四</div>
+          </article>
+          <article class="midi-card midi-card--new-row">
+            <div class="midi-card__header">撥奏練習五</div>
+            <div class="midi-card__media"><img class="play-midi" src="strum_5.gif" alt="撥奏練習五" WIDTH="516" HEIGHT="50" data-midi="strum_5.mp3"></div>
+            <div class="midi-card__media2"><img class="play-midi" src="strum_5a.gif" alt="撥奏練習五" WIDTH="494" HEIGHT="34" data-midi="strum_5.mp3"></div>
+            <div class="midi-card__caption">撥奏練習五</div>
+          </article>
+          <article class="midi-card midi-card--new-row">
+            <div class="midi-card__header">撥奏練習六</div>
+            <div class="midi-card__media"><img class="play-midi" src="strum_6.gif" alt="撥奏練習六" WIDTH="516" HEIGHT="50" data-midi="strum_6.mp3"></div>
+            <div class="midi-card__media2"><img class="play-midi" src="strum_6a.gif" alt="撥奏練習六" WIDTH="494" HEIGHT="34" data-midi="strum_6.mp3"></div>
+            <div class="midi-card__caption">撥奏練習六</div>
+          </article>
+          <article class="midi-card midi-card--new-row">
+            <div class="midi-card__header">撥奏練習七</div>
+            <div class="midi-card__media"><img class="play-midi" src="strum_7.gif" alt="撥奏練習七" WIDTH="516" HEIGHT="50" data-midi="strum_7.mp3"></div>
+            <div class="midi-card__media2"><img class="play-midi" src="strum_7a.gif" alt="撥奏練習七" WIDTH="494" HEIGHT="34" data-midi="strum_7.mp3"></div>
+            <div class="midi-card__caption">撥奏練習七</div>
+          </article>
+          <article class="midi-card midi-card--new-row">
+            <div class="midi-card__header">撥奏練習八</div>
+            <div class="midi-card__media"><img class="play-midi" src="strum_8.gif" alt="撥奏練習八" WIDTH="516" HEIGHT="50" data-midi="strum_8.mp3"></div>
+            <div class="midi-card__media2"><img class="play-midi" src="strum_8a.gif" alt="撥奏練習八" WIDTH="494" HEIGHT="34" data-midi="strum_8.mp3"></div>
+            <div class="midi-card__caption">撥奏練習八</div>
+          </article>
+          <article class="midi-card midi-card--new-row">
+            <div class="midi-card__header">撥奏練習九</div>
+            <div class="midi-card__media"><img class="play-midi" src="strum_9.gif" alt="撥奏練習九" WIDTH="517" HEIGHT="54" data-midi="strum_9.mp3"></div>
+            <div class="midi-card__media2"><img class="play-midi" src="strum_9a.gif" alt="撥奏練習九" WIDTH="494" HEIGHT="34" data-midi="strum_9.mp3"></div>
+            <div class="midi-card__caption">撥奏練習九</div>
+            </article>
+            <article class="midi-card midi-card--new-row">
+            <div class="midi-card__header">撥奏練習十</div>
+            <div class="midi-card__media"><img class="play-midi" src="strum_10.gif" alt="撥奏練習十" WIDTH="512" HEIGHT="49" data-midi="strum_10.mp3"></div>
+            <div class="midi-card__media2"><img class="play-midi" src="strum_10a.gif" alt="撥奏練習十" WIDTH="490" HEIGHT="34" data-midi="strum_10.mp3"></div>
+            <div class="midi-card__caption">撥奏練習十</div>
+            </article>
+        </div>
+      </section>
+      <section class="section">
+        <h2>練習小提示</h2>
+        <ul>
+          <li>先以簡單和弦進行練習，熟悉和弦間的轉換。</li>
+          <li>搭配節拍器練習，保持穩定拍子。</li>
+          <li>先掌握下撥與上撥。</li>
+          <li>多聽 MP3 範例，模仿不同曲風的伴奏型態。</li>
+        </ul>
+      </section>
+      <section class="section">
+        <div class="midi-player-status" id="midi-status">目前尚未播放任何 MP3。</div>
+      </section>
+      <audio id="midi-player" class="audio-player" controls>
+        <source id="midi-source" src="" type="audio/mpeg">
+      </audio>
+    </main>
+    <footer>© 2026 結他神棍之家 - 結他節奏篇</footer>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var player = document.getElementById('midi-player');
+      var source = document.getElementById('midi-source');
+      var status = document.getElementById('midi-status');
+      var canPlayAudio = player.canPlayType('audio/mpeg');
+      if (!canPlayAudio) {
+        status.textContent = '此瀏覽器可能不支援直接播放 MP3，請改用支援音訊播放的瀏覽器或下載檔案播放。';
+      }
+
+      document.querySelectorAll('.play-midi').forEach(function(img) {
+        img.addEventListener('click', function() {
+          var audioFile = img.getAttribute('data-midi');
+          if (!audioFile) return;
+          source.src = audioFile;
+          player.load();
+          player.play().then(function() {
+            status.textContent = '正在播放：' + audioFile;
+          }).catch(function(error) {
+            console.warn('MP3 playback failed:', error);
+            status.textContent = '播放 MP3 時遇到問題，請確認瀏覽器是否支援音訊播放或直接下載檔案播放。';
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
