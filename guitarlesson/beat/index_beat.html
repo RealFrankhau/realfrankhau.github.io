@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>技巧篇 - 結他節奏</title>
+  <style>
+    :root {
+      --bg: #f4efe6;
+      --surface: #ffffff;
+      --text: #222;
+      --muted: #5f5f5f;
+      --accent: #1a5f9f;
+      --border: rgba(34,34,34,0.08);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; background: var(--bg); color: var(--text); }
+    body::before { content: ""; position: fixed; inset: 0; pointer-events: none; background: radial-gradient(circle at top right, rgba(26,95,159,.14), transparent 22%); }
+    .page { position: relative; z-index: 1; }
+    .hero { background: linear-gradient(180deg, #1b4d81 0%, #256ba0 100%); color: #fff; padding: 44px 22px 34px; text-align: center; }
+    .hero h1 { margin: 0; font-size: clamp(2rem, 4vw, 3.2rem); letter-spacing: .04em; }
+    .hero p { margin: 18px auto 0; max-width: 780px; line-height: 1.75; color: rgba(255,255,255,.9); font-size: 1rem; }
+    .hero .badge { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; padding: 10px 16px; border-radius: 999px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.18); font-size: .95rem; }
+    .main { max-width: 1150px; margin: 0 auto; padding: 30px 20px 48px; }
+    .section { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 26px 28px; margin-bottom: 24px; box-shadow: 0 14px 30px rgba(28,40,68,.05); }
+    .section h2 { margin-top: 0; font-size: 1.8rem; }
+    .section p, .section li { color: var(--muted); line-height: 1.8; }
+    .section ul { padding-left: 1.25rem; margin: 0; }
+    .grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); margin-top: 18px; }
+    .card { border-radius: 20px; overflow: hidden; background: #fff; border: 1px solid var(--border); box-shadow: 0 14px 28px rgba(28,40,68,.05); }
+    .card img { width: 100%; display: block; object-fit: cover; }
+    .card-body { padding: 16px 16px 20px; }
+    .chord-line { display: flex; justify-content: center; align-items: center; gap: 12px; flex-wrap: wrap; margin: 18px 0; }
+    .chord-arrow { display: inline-flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--text); min-width: 24px; }
+    .card-body h3 { margin: 0 0 10px; font-size: 1.1rem; }
+    .card-body p { margin: 0; color: var(--muted); }
+    .table-list { width: 100%; border-collapse: collapse; margin-top: 16px; }
+    .table-list td { padding: 10px 8px; vertical-align: middle; }
+    .table-list img { width: 100%; max-width: 140px; border-radius: 14px; display: block; }
+    .table-list a { color: var(--accent); text-decoration: none; font-weight: 700; }
+    .nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 28px auto 0; max-width: 940px; }
+    .nav a { display: inline-flex; padding: 12px 18px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2); border-radius: 999px; color: #fff; text-decoration: none; font-weight: 600; transition: transform .2s, background .2s; }
+    .nav a:hover { transform: translateY(-1px); background: rgba(255,255,255,.2); }    
+    .play-midi { cursor: pointer; display: block; border-radius: 14px; transition: transform .2s, box-shadow .2s; width: auto; max-width: none; }
+    .play-midi:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(26,95,159,.18); }
+    .midi-caption { margin-top: 8px; color: var(--accent); font-weight: 700; font-size: 0.95rem; text-align: center; }
+    .midi-player-status { margin-top: 14px; color: var(--muted); font-size: 0.95rem; }
+    .audio-player { display: none; }
+    .midi-grid { display: grid; grid-template-columns: repeat(3, minmax(220px, 1fr)); gap: 18px; margin-top: 18px; }
+    .midi-card { background: #ffffff; border: 1px solid rgba(34,34,34,.08); border-radius: 20px; box-shadow: 0 14px 28px rgba(28,40,68,.05); overflow: hidden; display: flex; flex-direction: column; }
+    .midi-card--new-row { grid-column-start: 1; }
+    .midi-card__header { padding: 14px 16px 10px; font-size: 1rem; font-weight: 700; color: var(--accent); }
+    @media (max-width: 980px) {
+      .midi-grid { grid-template-columns: repeat(2, minmax(220px, 1fr)); }
+    }
+    @media (max-width: 640px) {
+      .midi-grid { grid-template-columns: 1fr; }
+    }
+    .midi-card__media { padding: 0 16px 16px; background: #f9f9f9; display: flex; justify-content: center; }
+    .midi-card__media img { width: 100%; height: auto; border-radius: 14px; }
+    .midi-card__caption { padding: 0 16px 16px; text-align: center; color: var(--accent); font-weight: 700; font-size: 0.95rem; }
+    .symbol-table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+    .symbol-table td { padding: 10px 8px; vertical-align: middle; }
+    .symbol-table .symbol-icon { width: 5%; text-align: center; }
+    .symbol-table .symbol-icon img { width: auto; height: 35px; max-width: none; }
+    .symbol-table .symbol-text { width: 95%; color: var(--muted); font-size: 1rem; line-height: 1.8; font-family: inherit; }
+    .symbol-title { text-align: center; margin: 0 0 12px; font-size: 1.5rem; color: #008000; font-family: inherit; }
+    .symbol-text span { font-family: inherit; }
+    .note { margin-top: 18px; padding: 16px 18px; background: #eef5fb; border-left: 4px solid #1a5f9f; border-radius: 14px; color: #1f496f; }
+    footer { text-align: center; padding: 22px 16px 28px; color: var(--muted); font-size: .95rem; }
+    
+    @media (max-width: 720px) { .hero { padding: 34px 16px 28px; } }
+  
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <h1>技巧篇 - 結他節奏</h1>
+      <p>將常用的節奏形態、撥奏符號和 MP3 範例放在一起，方便練習與快速瀏覽。</p>
+      <nav class="nav">
+        <a href="../index_new.html">返回結他神棍之家《技巧篇》</a>
+        <a href="./../../guitarmain/index.html">結他神棍之家</a>
+      </nav>
+    </header>
+    <main class="main">
+      <section class="section">
+        <h2>節奏與和弦進行</h2>
+        <p>在現代流行歌曲中，我們可以用歌曲節奏的形態來作分類，譬如：Country、Blues、Waltz、March 及 Jitterbug 等等。故此，當我們以結他作歌曲的伴奏時，應該選擇適當的節奏，才會帶出更好的效果。以下就是流行歌曲中，常用的節奏型態及伴奏方式，其中特別結合了結他指法和結他撥奏法。</p>
+        <p>以下的各個例子都是以 <strong>G → C → D → G</strong> 和弦來作進行。而大家更可以隨著附上的 MP3 檔案來跟著學習。</p>
+        <div class="chord-line">
+          <img src="../strumming/g.gif" alt="G Chord" width="131" height="209">
+          <span class="chord-arrow">→</span>
+          <img src="../strumming/c.gif" alt="C Chord" width="130" height="210">
+          <span class="chord-arrow">→</span>
+          <img src="../strumming/d.gif" alt="D Chord" width="130" height="210">
+          <span class="chord-arrow">→</span>
+          <img src="../strumming/g.gif" alt="G Chord" width="131" height="209">
+        </div>
+     </section>
+
+      <section class="section">
+        <h2 class="symbol-title">圖 例</h2>
+        <p>以下各個符號均為常見的節奏與撥奏記號，請參考下表練習。</p>
+        <table class="symbol-table">
+          <tr>
+            <td class="symbol-icon"><img src="downstroke.gif" alt="向下撥奏"></td>
+            <td class="symbol-text"><span>向下撥奏 『 向下掃 』 。</span></td>
+          </tr>
+          <tr>
+            <td class="symbol-icon"><img src="upstroke.gif" alt="向上撥奏"></td>
+            <td class="symbol-text"><span>向上撥奏 『 向上掃 』 。</span></td>
+          </tr>
+          <tr>
+            <td class="symbol-icon"><img src="appregio.gif" alt="琶音"></td>
+            <td class="symbol-text"><span>琶音記號 『 即以順序的方式來將每弦彈出來 』 。</span></td>
+          </tr>
+          <tr>
+            <td class="symbol-icon"><img src="fff.gif" alt="重拍記號"></td>
+            <td class="symbol-text"><span>重拍記號 。</span></td>
+          </tr>
+        </table>
+      </section>
+
+      <section class="section">
+        <h2>《一》 指法部分</h2>
+        <p>下列為指法部份的展示，請按圖播放對應 MP3 範例。</p>
+        <div class="midi-grid">
+          <article class="midi-card">
+            <div class="midi-card__header">Folk Rock</div>
+            <div class="midi-card__media"><img class="play-midi" src="folkrock1.gif" alt="Folk Rock 範例 1" width="254" height="74" data-midi="folkrock1.mp3"></div>
+            <div class="midi-card__caption">FOLK ROCK 1</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Folk Rock</div>
+            <div class="midi-card__media"><img class="play-midi" src="folkrock2.gif" alt="Folk Rock 範例 2" width="254" height="83" data-midi="folkrock2.mp3"></div>
+            <div class="midi-card__caption">FOLK ROCK 2</div>
+          </article>
+          <article class="midi-card midi-card--new-row">
+            <div class="midi-card__header">Rumba</div>
+            <div class="midi-card__media"><img class="play-midi" src="rumba1.gif" alt="Rumba 範例 1" width="254" height="74" data-midi="rumba1.mp3"></div>
+            <div class="midi-card__caption">RUMBA 1</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Rumba</div>
+            <div class="midi-card__media"><img class="play-midi" src="rumba2.gif" alt="Rumba 範例 2" width="254" height="74" data-midi="rumba2.mp3"></div>
+            <div class="midi-card__caption">RUMBA 2</div>
+          </article>
+          <article class="midi-card midi-card--new-row">
+            <div class="midi-card__header">Slow Rock</div>
+            <div class="midi-card__media"><img class="play-midi" src="slowrock1.gif" alt="Slow Rock 範例 1" width="396" height="86" data-midi="slowrock1.mp3"></div>
+            <div class="midi-card__caption">SLOW ROCK 1</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Slow Rock</div>
+            <div class="midi-card__media"><img class="play-midi" src="slowrock2.gif" alt="Slow Rock 範例 2" width="351" height="86" data-midi="slowrock2.mp3"></div>
+            <div class="midi-card__caption">SLOW ROCK 2 (沒有聲音檔)</div>
+          </article>
+          <article class="midi-card midi-card--new-row">
+            <div class="midi-card__header">Slow Soul</div>
+            <div class="midi-card__media"><img class="play-midi" src="slowsoul1.gif" alt="Slow Soul 範例 1" width="223" height="74" data-midi="slowsoul1.mp3"></div>
+            <div class="midi-card__caption">SLOW SOUL 1</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Slow Soul</div>
+            <div class="midi-card__media"><img class="play-midi" src="slowsoul2.gif" alt="Slow Soul 範例 2" width="223" height="74" data-midi="slowsoul2.mp3"></div>
+            <div class="midi-card__caption">SLOW SOUL 2</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Slow Soul</div>
+            <div class="midi-card__media"><img class="play-midi" src="slowsoul3.gif" alt="Slow Soul 範例 3" width="223" height="74" data-midi="slowsoul3.mp3"></div>
+            <div class="midi-card__caption">SLOW SOUL 3</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Slow Soul</div>
+            <div class="midi-card__media"><img class="play-midi" src="slowsoul4.gif" alt="Slow Soul 範例 2" width="223" height="74" data-midi="slowsoul4.mp3"></div>
+            <div class="midi-card__caption">SLOW SOUL 4</div>
+            </article>
+            <article class="midi-card">
+            <div class="midi-card__header">Slow Soul</div>
+            <div class="midi-card__media"><img class="play-midi" src="slowsoul5.gif" alt="Slow Soul 範例 2" width="223" height="74" data-midi="slowsoul5.mp3"></div>
+            <div class="midi-card__caption">SLOW SOUL 5</div>
+          </article>
+            <article class="midi-card midi-card--new-row">
+            <div class="midi-card__header">Waltz</div>
+            <div class="midi-card__media"><img class="play-midi" src="waltz1.gif" alt="Waltz 範例 1" width="182" height="74" data-midi="waltz1.mp3"></div>
+            <div class="midi-card__caption">WALTZ 1</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Waltz</div>
+            <div class="midi-card__media"><img class="play-midi" src="waltz2.gif" alt="Waltz 範例 2" width="169" height="74" data-midi="waltz2.mp3"></div>
+            <div class="midi-card__caption">WALTZ 2</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Waltz</div>
+            <div class="midi-card__media"><img class="play-midi" src="waltz3.gif" alt="Waltz 範例 3" width="169" height="74" data-midi="waltz3.mp3"></div>
+            <div class="midi-card__caption">WALTZ 3</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Waltz</div>
+            <div class="midi-card__media"><img class="play-midi" src="waltz4.gif" alt="Waltz 範例 4" width="169" height="74" data-midi="waltz4.mp3"></div>
+            <div class="midi-card__caption">WALTZ 4</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Waltz</div>
+            <div class="midi-card__media"><img class="play-midi" src="waltz5.gif" alt="Waltz 範例 5" width="169" height="74" data-midi="waltz5.mp3"></div>
+            <div class="midi-card__caption">WALTZ 5</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Waltz</div>
+            <div class="midi-card__media"><img class="play-midi" src="waltz6.gif" alt="Waltz 範例 6" width="169" height="74" data-midi="waltz6.mp3"></div>
+            <div class="midi-card__caption">WALTZ 6</div>
+          </article>
+        </div>
+      </section>
+      <section class="section">
+        <h2>《二》 撥奏部分</h2>
+        <p>包含更多的節奏類型，從 A GO GO、Blues、Cha Cha 到 Tango、Twist、March，讓你的節奏練習更完整。點擊圖片即可播放對應 MP3。</p>
+        <div class="midi-grid">
+          <article class="midi-card">
+            <div class="midi-card__header">A GO GO</div>
+            <div class="midi-card__media"><img class="play-midi" src="agogo1.gif" alt="A GO GO 範例 1" width="254" height="74" data-midi="agogo1.mp3"></div>
+            <div class="midi-card__caption">A GO GO 1</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">A GO GO</div>
+            <div class="midi-card__media"><img class="play-midi" src="agogo2.gif" alt="A GO GO 範例 2" width="254" height="74" data-midi="agogo2.mp3"></div>
+            <div class="midi-card__caption">A GO GO 2</div>
+          </article>
+                   <article class="midi-card">
+            <div class="midi-card__header">A GO GO</div>
+            <div class="midi-card__media"><img class="play-midi" src="agogo3.gif" alt="A GO GO 範例 3" width="254" height="74" data-midi="agogo3.mp3"></div>
+            <div class="midi-card__caption">A GO GO 3</div>
+          </article>
+                   <article class="midi-card">
+            <div class="midi-card__header">A GO GO</div>
+            <div class="midi-card__media"><img class="play-midi" src="agogo4.gif" alt="A GO GO 範例 4" width="254" height="74" data-midi="agogo4.mp3"></div>
+            <div class="midi-card__caption">A GO GO 4</div>
+          </article>
+          <article class="midi-card midi-card--new-row">
+            <div class="midi-card__header">Blues</div>
+            <div class="midi-card__media"><img class="play-midi" src="blues1.gif" alt="Blues 範例 1" width="254" height="74" data-midi="blues1.mp3"></div>
+            <div class="midi-card__caption">Blues 1</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Blues</div>
+            <div class="midi-card__media"><img class="play-midi" src="blues2.gif" alt="Blues 範例 2" width="254" height="74" data-midi="blues2.mp3"></div>
+            <div class="midi-card__caption">Blues 2</div>
+          </article>
+                    <article class="midi-card">
+            <div class="midi-card__header">Blues</div>
+            <div class="midi-card__media"><img class="play-midi" src="blues3.gif" alt="Blues 範例 3" width="254" height="74" data-midi="blues3.mp3"></div>
+            <div class="midi-card__caption">Blues 3</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Blues</div>
+            <div class="midi-card__media"><img class="play-midi" src="blues4.gif" alt="Blues 範例 4" width="254" height="74" data-midi="blues4.mp3"></div>
+            <div class="midi-card__caption">Blues 4</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Blues</div>
+            <div class="midi-card__media"><img class="play-midi" src="blues5.gif" alt="Blues 範例 5" width="254" height="74" data-midi="blues5.mp3"></div>
+            <div class="midi-card__caption">Blues 5</div>
+          </article>
+          <article class="midi-card midi-card--new-row">
+            <div class="midi-card__header">Cha Cha</div>
+            <div class="midi-card__media"><img class="play-midi" src="chacha1.gif" alt="Cha Cha 範例 1" width="254" height="74" data-midi="chacha1.mp3"></div>
+            <div class="midi-card__caption">Cha Cha 1</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Cha Cha</div>
+            <div class="midi-card__media"><img class="play-midi" src="chacha2.gif" alt="Cha Cha 範例 2" width="254" height="74" data-midi="chacha2.mp3"></div>
+            <div class="midi-card__caption">Cha Cha 2</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Cha Cha</div>
+            <div class="midi-card__media"><img class="play-midi" src="chacha3.gif" alt="Cha Cha 範例 3" width="254" height="74" data-midi="chacha3.mp3"></div>
+            <div class="midi-card__caption">Cha Cha 3</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Cha Cha</div>
+            <div class="midi-card__media"><img class="play-midi" src="chacha4.gif" alt="Cha Cha 範例 4" width="254" height="74" data-midi="chacha4.mp3"></div>
+            <div class="midi-card__caption">Cha Cha 4</div>
+          </article>
+          <article class="midi-card midi-card--new-row">
+            <div class="midi-card__header">Country</div>
+            <div class="midi-card__media"><img class="play-midi" src="country1.gif" alt="Country 範例 1" width="254" height="74" data-midi="country1.mp3"></div>
+            <div class="midi-card__caption">Country 1</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Country</div>
+            <div class="midi-card__media"><img class="play-midi" src="country2.gif" alt="Country 範例 2" width="254" height="74" data-midi="country2.mp3"></div>
+            <div class="midi-card__caption">Country 2</div>
+          </article>
+          <article class="midi-card midi-card--new-row">
+            <div class="midi-card__header">Disco</div>
+            <div class="midi-card__media"><img class="play-midi" src="disco1.gif" alt="Disco 範例" width="254" height="74" data-midi="disco1.mp3"></div>
+            <div class="midi-card__caption">Disco</div>
+          </article>
+          <article class="midi-card midi-card--new-row">
+            <div class="midi-card__header">Folk Rock</div>
+            <div class="midi-card__media"><img class="play-midi" src="folkrock3.gif" alt="Folk Rock 範例 3" width="254" height="83" data-midi="folkrock3.mp3"></div>
+            <div class="midi-card__caption">Folk Rock 3</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Folk Rock</div>
+            <div class="midi-card__media"><img class="play-midi" src="folkrock4.gif" alt="Folk Rock 範例 4" width="254" height="83" data-midi="folkrock4.mp3"></div>
+            <div class="midi-card__caption">Folk Rock 4</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Folk Rock</div>
+            <div class="midi-card__media"><img class="play-midi" src="folkrock5.gif" alt="Folk Rock 範例 5" width="254" height="83" data-midi="folkrock5.mp3"></div>
+            <div class="midi-card__caption">Folk Rock 5</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Folk Rock</div>
+            <div class="midi-card__media"><img class="play-midi" src="folkrock6.gif" alt="Folk Rock 範例 6" width="254" height="83" data-midi="folkrock6.mp3"></div>
+            <div class="midi-card__caption">Folk Rock 6</div>
+          </article>
+          <article class="midi-card midi-card--new-row">
+            <div class="midi-card__header">Jitterbug</div>
+            <div class="midi-card__media"><img class="play-midi" src="jitterbug1.gif" alt="Jitterbug 範例 1" width="254" height="74" data-midi="jitterbug1.mp3"></div>
+            <div class="midi-card__caption">Jitterbug 1</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Jitterbug</div>
+            <div class="midi-card__media"><img class="play-midi" src="jitterbug2.gif" alt="Jitterbug 範例 2" width="254" height="74" data-midi="jitterbug2.mp3"></div>
+            <div class="midi-card__caption">Jitterbug 2</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Jitterbug</div>
+            <div class="midi-card__media"><img class="play-midi" src="jitterbug3.gif" alt="Jitterbug 範例 3" width="254" height="74" data-midi="jitterbug3.mp3"></div>
+            <div class="midi-card__caption">Jitterbug 3</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Jitterbug</div>
+            <div class="midi-card__media"><img class="play-midi" src="jitterbug4.gif" alt="Jitterbug 範例 4" width="254" height="74" data-midi="jitterbug4.mp3"></div>
+            <div class="midi-card__caption">Jitterbug 4</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Jitterbug</div>
+            <div class="midi-card__media"><img class="play-midi" src="jitterbug5.gif" alt="Jitterbug 範例 5" width="254" height="74" data-midi="jitterbug5.mp3"></div>
+            <div class="midi-card__caption">Jitterbug 5</div>
+          </article>
+          <article class="midi-card midi-card--new-row">
+            <div class="midi-card__header">March</div>
+            <div class="midi-card__media"><img class="play-midi" src="march1.gif" alt="March 範例 1" width="254" height="74" data-midi="march1.mp3"></div>
+            <div class="midi-card__caption">March 1</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">March</div>
+            <div class="midi-card__media"><img class="play-midi" src="march2.gif" alt="March 範例 2" width="254" height="74" data-midi="march2.mp3"></div>
+            <div class="midi-card__caption">March 2</div>
+          </article>
+          <article class="midi-card midi-card--new-row">
+            <div class="midi-card__header">Rock and Roll</div>
+            <div class="midi-card__media"><img class="play-midi" src="rockroll1.gif" alt="Rock and Roll 範例 1" width="254" height="74" data-midi="rockroll1.mp3"></div>
+            <div class="midi-card__caption">Rock and Roll 1</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Rock and Roll</div>
+            <div class="midi-card__media"><img class="play-midi" src="rockroll2.gif" alt="Rock and Roll 範例 2" width="254" height="74" data-midi="rockroll2.mp3"></div>
+            <div class="midi-card__caption">Rock and Roll 2</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Rock and Roll</div>
+            <div class="midi-card__media"><img class="play-midi" src="rockroll3.gif" alt="Rock and Roll 範例 3" width="254" height="74" data-midi="rockroll3.mp3"></div>
+            <div class="midi-card__caption">Rock and Roll 3</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Rock and Roll</div>
+            <div class="midi-card__media"><img class="play-midi" src="rockroll4.gif" alt="Rock and Roll 範例 4" width="254" height="74" data-midi="rockroll4.mp3"></div>
+            <div class="midi-card__caption">Rock and Roll 4</div>
+          </article>
+                    <article class="midi-card midi-card--new-row">
+            <div class="midi-card__header">Rumba</div>
+            <div class="midi-card__media"><img class="play-midi" src="rumba3.gif" alt="Rumba 範例 3" width="254" height="74" data-midi="rumba3.mp3"></div>
+            <div class="midi-card__caption">Rumba 3</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Rumba</div>
+            <div class="midi-card__media"><img class="play-midi" src="rumba4.gif" alt="Rumba 範例 4" width="254" height="74" data-midi="rumba4.mp3"></div>
+            <div class="midi-card__caption">Rumba 4</div>
+          </article>
+          <article class="midi-card midi-card--new-row">
+            <div class="midi-card__header">Slow Rock</div>
+            <div class="midi-card__media"><img class="play-midi" src="slowrock3.gif" alt="Slow Rock 範例 3" width="254" height="86" data-midi="slowrock3.mp3"></div>
+            <div class="midi-card__caption">Slow Rock 3</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Slow Rock</div>
+            <div class="midi-card__media"><img class="play-midi" src="slowrock4.gif" alt="Slow Rock 範例 4" width="254" height="86" data-midi="slowrock4.mp3"></div>
+            <div class="midi-card__caption">Slow Rock 4 (沒有聲音檔)</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Slow Rock</div>
+            <div class="midi-card__media"><img class="play-midi" src="slowrock5.gif" alt="Slow Rock 範例 5" width="254" height="86" data-midi="slowrock5.mp3"></div>
+            <div class="midi-card__caption">Slow Rock 5</div>
+          </article>
+          <article class="midi-card midi-card--new-row">
+            <div class="midi-card__header">Slow Soul</div>
+            <div class="midi-card__media"><img class="play-midi" src="slowsoul6.gif" alt="Slow Soul 範例 6" width="223" height="74" data-midi="slowsoul6.mp3"></div>
+            <div class="midi-card__caption">Slow Soul 6</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Slow Soul</div>
+            <div class="midi-card__media"><img class="play-midi" src="slowsoul7.gif" alt="Slow Soul 範例 7" width="223" height="74" data-midi="slowsoul7.mp3"></div>
+            <div class="midi-card__caption">Slow Soul 7</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Slow Soul</div>
+            <div class="midi-card__media"><img class="play-midi" src="slowsoul8.gif" alt="Slow Soul 範例 8" width="223" height="74" data-midi="slowsoul8.mp3"></div>
+            <div class="midi-card__caption">Slow Soul 8</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Slow Soul</div>
+            <div class="midi-card__media"><img class="play-midi" src="slowsoul9.gif" alt="Slow Soul 範例 9" width="223" height="74" data-midi="slowsoul9.mp3"></div>
+            <div class="midi-card__caption">Slow Soul 9</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Slow Soul</div>
+            <div class="midi-card__media"><img class="play-midi" src="slowsoul10.gif" alt="Slow Soul 範例 10" width="223" height="74" data-midi="slowsoul10.mp3"></div>
+            <div class="midi-card__caption">Slow Soul 10</div>
+          </article>
+          <article class="midi-card midi-card--new-row">
+            <div class="midi-card__header">Swing</div>
+            <div class="midi-card__media"><img class="play-midi" src="swing.gif" alt="Swing 範例" width="254" height="74" data-midi="swing1.mp3"></div>
+            <div class="midi-card__caption">Swing</div>
+          </article>
+          <article class="midi-card midi-card--new-row">
+            <div class="midi-card__header">Tango</div>
+            <div class="midi-card__media"><img class="play-midi" src="tango1.gif" alt="Tango 範例 1" width="254" height="74" data-midi="tango1.mp3"></div>
+            <div class="midi-card__caption">Tango 1</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Tango</div>
+            <div class="midi-card__media"><img class="play-midi" src="tango2.gif" alt="Tango 範例 2" width="254" height="74" data-midi="tango2.mp3"></div>
+            <div class="midi-card__caption">Tango 2</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Tango</div>
+            <div class="midi-card__media"><img class="play-midi" src="tango3.gif" alt="Tango 範例 3" width="254" height="74" data-midi="tango3.mp3"></div>
+            <div class="midi-card__caption">Tango 3</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Tango</div>
+            <div class="midi-card__media"><img class="play-midi" src="tango4.gif" alt="Tango 範例 4" width="254" height="74" data-midi="tango4.mp3"></div>
+            <div class="midi-card__caption">Tango 4</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Tango</div>
+            <div class="midi-card__media"><img class="play-midi" src="tango5.gif" alt="Tango 範例 5" width="254" height="74" data-midi="tango5.mp3"></div>
+            <div class="midi-card__caption">Tango 5</div>
+          </article>
+          <article class="midi-card midi-card--new-row">
+            <div class="midi-card__header">Twist</div>
+            <div class="midi-card__media"><img class="play-midi" src="twist1.gif" alt="Twist 範例 1" width="254" height="74" data-midi="twist1.mp3"></div>
+            <div class="midi-card__caption">Twist 1</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Twist</div>
+            <div class="midi-card__media"><img class="play-midi" src="twist2.gif" alt="Twist 範例 2" width="254" height="74" data-midi="twist2.mp3"></div>
+            <div class="midi-card__caption">Twist 2</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Twist</div>
+            <div class="midi-card__media"><img class="play-midi" src="twist3.gif" alt="Twist 範例 3" width="254" height="74" data-midi="twist3.mp3"></div>
+            <div class="midi-card__caption">Twist 3</div>
+          </article>
+          <article class="midi-card midi-card--new-row">
+            <div class="midi-card__header">Waltz</div>
+            <div class="midi-card__media"><img class="play-midi" src="waltz7.gif" alt="Waltz 範例 7" width="169" height="74" data-midi="waltz7.mp3"></div>
+            <div class="midi-card__caption">Waltz 7</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Waltz</div>
+            <div class="midi-card__media"><img class="play-midi" src="waltz8.gif" alt="Waltz 範例 8" width="169" height="74" data-midi="waltz8.mp3"></div>
+            <div class="midi-card__caption">Waltz 8</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Waltz</div>
+            <div class="midi-card__media"><img class="play-midi" src="waltz9.gif" alt="Waltz 範例 9" width="169" height="74" data-midi="waltz9.mp3"></div>
+            <div class="midi-card__caption">Waltz 9</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Waltz</div>
+            <div class="midi-card__media"><img class="play-midi" src="waltz10.gif" alt="Waltz 範例 10" width="169" height="74" data-midi="waltz10.mp3"></div>
+            <div class="midi-card__caption">Waltz 10</div>
+          </article>
+          <article class="midi-card">
+            <div class="midi-card__header">Waltz</div>
+            <div class="midi-card__media"><img class="play-midi" src="waltz11.gif" alt="Waltz 範例 11" width="169" height="74" data-midi="waltz11.mp3"></div>
+            <div class="midi-card__caption">Waltz 11</div>
+          </article>
+        </div>
+      </section>
+      <section class="section">
+        <h2>練習小提示</h2>
+        <ul>
+          <li>先以簡單和弦進行練習，熟悉和弦間的轉換。</li>
+          <li>搭配節拍器練習，保持穩定拍子。</li>
+          <li>先掌握下撥與上撥，再加入琶音與重拍。</li>
+          <li>多聽 MP3 範例，模仿不同曲風的伴奏型態。</li>
+        </ul>
+      </section>
+      <section class="section">
+        <div class="midi-player-status" id="midi-status">目前尚未播放任何 MP3。</div>
+      </section>
+      <audio id="midi-player" class="audio-player" controls>
+        <source id="midi-source" src="" type="audio/mpeg">
+      </audio>
+    </main>
+    <footer>© 2026 結他神棍之家 - 結他節奏篇</footer>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var player = document.getElementById('midi-player');
+      var source = document.getElementById('midi-source');
+      var status = document.getElementById('midi-status');
+      var canPlayAudio = player.canPlayType('audio/mpeg');
+      if (!canPlayAudio) {
+        status.textContent = '此瀏覽器可能不支援直接播放 MP3，請改用支援音訊播放的瀏覽器或下載檔案播放。';
+      }
+
+      document.querySelectorAll('.play-midi').forEach(function(img) {
+        img.addEventListener('click', function() {
+          var audioFile = img.getAttribute('data-midi');
+          if (!audioFile) return;
+          source.src = audioFile;
+          player.load();
+          player.play().then(function() {
+            status.textContent = '正在播放：' + audioFile;
+          }).catch(function(error) {
+            console.warn('MP3 playback failed:', error);
+            status.textContent = '播放 MP3 時遇到問題，請確認瀏覽器是否支援音訊播放或直接下載檔案播放。';
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>
