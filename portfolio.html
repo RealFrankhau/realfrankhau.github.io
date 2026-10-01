@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Frank Hau 的網頁作品集，展示香港城市資訊、港鐵班次與巴士地圖作品。">
+    <title>Portfolio | Frank Hau</title>
+    <link rel="icon" href="website_logo_transparent.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --deep: #06283d;
+            --navy: #0b3b56;
+            --ocean: #087e8b;
+            --aqua: #43d9c5;
+            --foam: #e9fbf7;
+            --ink: #143847;
+            --muted: #587481;
+            --line: rgba(8, 126, 139, 0.16);
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--foam);
+            color: var(--ink);
+            font-family: "DM Sans", "Noto Sans TC", sans-serif;
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        .site-header {
+            background: var(--deep);
+            color: var(--white);
+            padding: 22px 7vw;
+        }
+
+        .nav-bar {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+            margin: 0 auto;
+            max-width: 1180px;
+        }
+
+        .brand {
+            align-items: center;
+            display: inline-flex;
+            font-size: 1.05rem;
+            font-weight: 700;
+            gap: 11px;
+            letter-spacing: 0.08em;
+            text-decoration: none;
+        }
+
+        .brand img {
+            height: 38px;
+            object-fit: contain;
+            width: 38px;
+        }
+
+        .nav-link {
+            border-bottom: 1px solid transparent;
+            color: rgba(255, 255, 255, 0.78);
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: border-color 180ms ease, color 180ms ease;
+        }
+
+        .nav-link:hover {
+            border-color: var(--aqua);
+            color: var(--aqua);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--deep) 0%, var(--navy) 58%, var(--ocean) 100%);
+            color: var(--white);
+            min-height: 480px;
+            overflow: hidden;
+            padding: 78px 7vw 96px;
+            position: relative;
+        }
+
+        .hero::after {
+            background: repeating-linear-gradient(170deg, transparent 0 33px, rgba(67, 217, 197, 0.1) 34px 35px);
+            bottom: -96px;
+            content: "";
+            height: 220px;
+            left: -3%;
+            position: absolute;
+            transform: rotate(-3deg);
+            width: 106%;
+        }
+
+        .hero-content {
+            margin: 0 auto;
+            max-width: 1180px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .eyebrow {
+            color: var(--aqua);
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            margin-bottom: 18px;
+            text-transform: uppercase;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: "Noto Sans TC", sans-serif;
+        }
+
+        h1 {
+            font-size: clamp(2.7rem, 7vw, 5.7rem);
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            max-width: 800px;
+        }
+
+        .hero-copy {
+            color: rgba(255, 255, 255, 0.82);
+            font-size: clamp(1rem, 2vw, 1.18rem);
+            margin-top: 22px;
+            max-width: 600px;
+        }
+
+        .hero-meta {
+            align-items: center;
+            display: flex;
+            gap: 22px;
+            margin-top: 34px;
+        }
+
+        .hero-meta span {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+        }
+
+        .hero-meta strong {
+            color: var(--aqua);
+            font-size: 1.3rem;
+            margin-right: 5px;
+        }
+
+        .projects {
+            margin: 0 auto;
+            max-width: 1180px;
+            padding: 82px 7vw 92px;
+        }
+
+        .section-heading {
+            align-items: end;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .section-heading h2 {
+            color: var(--deep);
+            font-size: clamp(1.8rem, 4vw, 2.7rem);
+            line-height: 1.2;
+        }
+
+        .section-heading p {
+            color: var(--muted);
+            font-size: 0.95rem;
+            max-width: 330px;
+            text-align: right;
+        }
+
+        .project-grid {
+            display: grid;
+            gap: 22px;
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .project-card {
+            background: var(--white);
+            border: 1px solid var(--line);
+            border-top: 5px solid var(--ocean);
+            box-shadow: 0 14px 35px rgba(6, 40, 61, 0.08);
+            display: flex;
+            flex-direction: column;
+            min-height: 405px;
+            padding: 27px 25px 25px;
+            transition: box-shadow 180ms ease, transform 180ms ease;
+        }
+
+        .project-card:nth-child(2) {
+            border-top-color: #159a9c;
+        }
+
+        .project-card:nth-child(3) {
+            border-top-color: #37b7a5;
+        }
+
+        .project-card:hover {
+            box-shadow: 0 20px 42px rgba(6, 40, 61, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .project-number {
+            color: var(--aqua);
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+        }
+
+        .project-card h3 {
+            color: var(--deep);
+            font-size: 1.45rem;
+            line-height: 1.35;
+            margin: 12px 0 12px;
+        }
+
+        .project-card h3 span {
+            color: var(--muted);
+            display: block;
+            font-family: "DM Sans", sans-serif;
+            font-size: 0.88rem;
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        .project-card p {
+            color: var(--muted);
+            font-size: 0.96rem;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 22px;
+        }
+
+        .tag {
+            background: #e5f7f4;
+            color: var(--ocean);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 9px;
+        }
+
+        .project-link {
+            align-items: center;
+            border-top: 1px solid var(--line);
+            color: var(--ocean);
+            display: flex;
+            font-size: 0.9rem;
+            font-weight: 700;
+            justify-content: space-between;
+            margin-top: auto;
+            padding-top: 20px;
+            text-decoration: none;
+        }
+
+        .project-link span {
+            font-size: 1.25rem;
+            transition: transform 180ms ease;
+        }
+
+        .project-link:hover span {
+            transform: translateX(5px);
+        }
+
+        .closing-note {
+            border-left: 4px solid var(--aqua);
+            margin: 42px auto 0;
+            max-width: 720px;
+            padding: 2px 0 2px 19px;
+        }
+
+        .closing-note p {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        footer {
+            background: var(--deep);
+            color: rgba(255, 255, 255, 0.62);
+            font-size: 0.82rem;
+            padding: 24px 7vw;
+            text-align: center;
+        }
+
+        footer a {
+            color: var(--aqua);
+            text-decoration: none;
+        }
+
+        @media (max-width: 800px) {
+            .hero {
+                min-height: 430px;
+                padding-bottom: 82px;
+                padding-top: 62px;
+            }
+
+            .section-heading {
+                align-items: start;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .section-heading p {
+                text-align: left;
+            }
+
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project-card {
+                min-height: 330px;
+            }
+        }
+
+        @media (max-width: 460px) {
+            .site-header,
+            .hero,
+            .projects {
+                padding-left: 6vw;
+                padding-right: 6vw;
+            }
+
+            .hero-meta {
+                gap: 14px;
+            }
+
+            .hero-meta span {
+                font-size: 0.78rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="nav-bar">
+            <a class="brand" href="index.html">
+                <img src="website_logo_transparent.png" alt="Frank Hau 標誌">
+                <span>FRANK HAU</span>
+            </a>
+            <a class="nav-link" href="index.html">返回首頁</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" aria-labelledby="page-title">
+            <div class="hero-content">
+                <p class="eyebrow">Selected Web Projects</p>
+                <h1 id="page-title">把香港的日常，<br>做成好用的網頁。</h1>
+                <p class="hero-copy">這裡收錄我製作的香港交通與城市資訊工具，將公開數據整理成清晰、即時而且容易使用的網頁體驗。</p>
+                <div class="hero-meta" aria-label="作品集統計">
+                    <span><strong>03</strong> 個主要作品</span>
+                    <span><strong>HK</strong> 城市數據</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="projects" id="projects" aria-labelledby="projects-title">
+            <div class="section-heading">
+                <h2 id="projects-title">作品一覽</h2>
+                <p>從即時交通到城市探索，讓資訊在需要的時候準確出現。</p>
+            </div>
+
+            <div class="project-grid">
+                <article class="project-card">
+                    <p class="project-number">01 / CITY DATA</p>
+                    <h3>HK City API<span>香港城市數據通</span></h3>
+                    <p>一個整合香港生活資訊的城市儀表板，集中展示天氣、港鐵、巴士、航班等實時資料，讓使用者在單一頁面快速掌握城市狀態。</p>
+                    <div class="tags">
+                        <span class="tag">公開數據</span>
+                        <span class="tag">即時資訊</span>
+                        <span class="tag">城市工具</span>
+                    </div>
+                    <a class="project-link" href="https://hkcityapi.vercel.app/" target="_blank" rel="noopener noreferrer">瀏覽作品 <span aria-hidden="true">↗</span></a>
+                </article>
+
+                <article class="project-card">
+                    <p class="project-number">02 / TRANSIT</p>
+                    <h3>MTR Timetable<span>港鐵實時班次</span></h3>
+                    <p>專注於港鐵班次資訊的輕量工具，支援路線與車站選擇，清楚顯示列車方向、月台及預計到達時間，方便日常出行查閱。</p>
+                    <div class="tags">
+                        <span class="tag">MTR API</span>
+                        <span class="tag">即時班次</span>
+                        <span class="tag">Responsive</span>
+                    </div>
+                    <a class="project-link" href="https://mtrodmobile.vercel.app/" target="_blank" rel="noopener noreferrer">瀏覽作品 <span aria-hidden="true">↗</span></a>
+                </article>
+
+                <article class="project-card">
+                    <p class="project-number">03 / MAP</p>
+                    <h3>Hong Kong Bus Map<span>香港巴士地圖</span></h3>
+                    <p>以地圖為核心的香港巴士站探索工具，協助使用者查看巴士站位置與路線分布，把複雜的公共交通網絡變成直觀的地理視圖。</p>
+                    <div class="tags">
+                        <span class="tag">互動地圖</span>
+                        <span class="tag">巴士站</span>
+                        <span class="tag">Leaflet</span>
+                    </div>
+                    <a class="project-link" href="https://hkbus-stop.vercel.app/" target="_blank" rel="noopener noreferrer">瀏覽作品 <span aria-hidden="true">↗</span></a>
+                </article>
+            </div>
+
+            <div class="closing-note">
+                <p>每個作品都從一個簡單問題開始：如何讓香港的公共資訊更容易被找到、理解和使用。</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 Frank Hau · <a href="index.html">frankhau</a></p>
+    </footer>
+</body>
+</html>
